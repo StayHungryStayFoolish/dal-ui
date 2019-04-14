@@ -1,4 +1,4 @@
-package ink.bonismo.rest;
+package ink.bonismo.web.rest;
 
 /**
  * Created by bonismo@hotmail.com on 2019/4/11 10:49 PM

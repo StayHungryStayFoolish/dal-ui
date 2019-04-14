@@ -1,0 +1,40 @@
+spring:
+    jpa:
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
+        show-sql: true
+        open-in-view: false
+    hibernate:
+        ddl-auto: none
+        naming:
+            physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+            implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+    properties:
+        hibernate.id.new_generator_mappings: true
+        hibernate.generate_statistics: true
+        hibernate.cache.region.factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+        hibernate.cache.use_minimal_puts: false
+        hibernate.cache.hazelcast.use_lite_member: false
+        hibernate.cache.use_second_level_cache: false
+        hibernate.cache.use_query_cache: false
+    datasource:
+        url: jdbc:mysql://localhost:3306/kotlin_ui?useUnicode=true&characterEncoding=utf8&useSSL=false
+        username: root
+        password: admin
+    hikari:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+    liquibase:
+        contexts: dev,prod,test
+        change-log: "classpath:/config/liquibase/master.yml"
+server:
+    port: 9090
+
+# grpc
+grpc:
+    server:
+        address: 0.0.0.0
+        port: 10081
+
+logging:
+    level:
+        ink.bonismo: debug

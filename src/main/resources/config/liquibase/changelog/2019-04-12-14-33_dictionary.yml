@@ -1,0 +1,127 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: mysql
+  - property:
+      name: autoIncrement
+      value: true
+  - changeSet:
+      id: dictionary-table-create
+      author: bonismo
+      changes:
+        - createTable:
+            tableName: dictionary
+            columns:
+              - cloumn:
+                  name: id
+                  type: BigInt
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+                    - nullable: false
+                    - updateable: false
+              - column:
+                  name: parent
+                  type: varchar(255)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: language
+                  type: varchar(5)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: status
+                  type: varchar(10)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: icon
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: url
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: links
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: ordinal
+                  type: integer
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: extension
+                  type: clob
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: description
+                  type: clob
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: created_by
+                  type: varchar(50)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: created_date
+                  type: timestamp
+                  defaultValue: ${now}
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: last_modified_by
+                  type: varchar(50)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+                  defaultValue: ${now}
+                  constraints:
+                    - nullable: false
+        - createIndex:
+            indexName: idx_dictionary_parent
+            tableName: dictionary
+            unique: false
+            columns:
+              - column:
+                  name: parent
+                  type: varchar(255)
+        - createIndex:
+            indexName: idx_dictionary_name
+            tableName: dictionary
+            unique: false
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+        - createIndex:
+            indexName: idx_dictionary_language
+            tableName: dictionary
+            unique: false
+            columns:
+              - column:
+                  name: language
+                  type: varchar(5)
+        - createIndex:
+            indexName: idx_dictionary_status
+            tableName: dictionary
+            unique: false
+            columns:
+              - column:
+                  name: status
+                  type: varchar(10)

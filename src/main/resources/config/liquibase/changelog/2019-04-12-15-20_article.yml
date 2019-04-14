@@ -1,0 +1,132 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: mysql
+  - property:
+      name: autoIncrement
+      value: true
+  - changeSet:
+      id: article-tabale-create
+      author: bonismo
+      changes:
+        - createTable:
+            tableName: article
+            columns:
+              - cloumn:
+                  name: id
+                  type: BigInt
+                  autoIncrement: true
+                  constraints:
+                    - primaryKey: true
+                    - nullable: false
+                    - updateable: false
+              - column:
+                  name: dict_id
+                  type: BigInt
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: unique_id
+                  type: varchar(32)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: title
+                  type: varchar(800)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: text
+                  type: clob
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: language
+                  type: varchar(5)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: icon
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: thumbnail
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: tag
+                  type: varchar(800)
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: ordinal
+                  type: integer
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: extension
+                  type: clob
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: description
+                  type: clob
+                  constraints:
+                    - nullable: true
+              - column:
+                  name: created_by
+                  type: varchar(50)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: created_date
+                  type: timestamp
+                  defaultValue: ${now}
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: last_modified_by
+                  type: varchar(50)
+                  constraints:
+                    - nullable: false
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+                  defaultValue: ${now}
+                  constraints:
+                    - nullable: false
+        - createIndex:
+            indexName: idx_article_dict_id
+            tableName: article
+            unique: false
+            columns:
+              - column:
+                  name: dict_id
+                  type: BigInt
+        - createIndex:
+            indexName: idx_article_unique_id
+            tableName: article
+            unique: false
+            columns:
+              - column:
+                  name: unique_id
+                  type: varchar(32)
+        - createIndex:
+            indexName: idx_article_language
+            tableName: article
+            unique: false
+            columns:
+              - column:
+                  name: language
+                  type: varchar(5)
+        - createIndex:
+            indexName: idx_article_title
+            tableName: article
+            unique: false
+            columns:
+              - column:
+                  name: title
+                  type: varchar(800)
