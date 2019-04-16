@@ -13,7 +13,7 @@ databaseChangeLog:
         - createTable:
             tableName: article
             columns:
-              - cloumn:
+              - column:
                   name: id
                   type: BigInt
                   autoIncrement: true

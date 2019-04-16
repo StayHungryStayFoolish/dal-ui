@@ -13,14 +13,14 @@ databaseChangeLog:
         - createTable:
             tableName: dictionary
             columns:
-              - cloumn:
+              - column:
                   name: id
                   type: BigInt
                   autoIncrement: true
                   constraints:
                     - primaryKey: true
                     - nullable: false
-                    - updateable: false
+                    - updatable: false
               - column:
                   name: parent
                   type: varchar(255)

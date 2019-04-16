@@ -3,4 +3,3 @@ databaseChangeLog:
       file: config/liquibase/changelog/2019-04-12-14-33_dictionary.yml
   - include:
       file: config/liquibase/changelog/2019-04-12-15-20_article.yml
-
