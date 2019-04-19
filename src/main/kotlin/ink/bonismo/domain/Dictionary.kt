@@ -27,7 +27,6 @@ import javax.validation.constraints.Size
 data class Dictionary(
 
         @Id
-//        @Column(nullable = false, updatable = false)
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long,
 
@@ -51,15 +50,15 @@ data class Dictionary(
 
         @Size(max = 800)
         @Column(name = "icon", length = 800)
-        var icon: String,
+        var icon: String?,
 
         @Size(max = 800)
         @Column(name = "url", length = 800)
-        var url: String,
+        var url: String?,
 
         @Size(max = 800)
         @Column(name = "links", length = 800)
-        var links: String,
+        var links: String?,
 
         @NotNull
         @Column(name = "ordinal", nullable = false)
@@ -67,12 +66,11 @@ data class Dictionary(
 
         @Lob
         @Column(name = "extension")
-        var extension: String,
+        var extension: String?,
 
         @Lob
         @Column(name = "description")
-        var description: String,
-
+        var description: String?,
 
         @CreatedBy
         @Column(name = "created_by", nullable = false, length = 50, updatable = false)

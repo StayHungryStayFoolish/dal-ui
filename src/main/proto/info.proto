@@ -1,0 +1,133 @@
+syntax = "proto3";
+
+option java_package = "ink.bonismo";
+option go_package = "ink.bonismo";
+
+import "google/protobuf/empty.proto";
+
+service InfoService {
+    rpc SaveDict(DictList) returns (DictList) {};
+    rpc SaveArticle(ArticleList) returns (ArticleList) {};
+    rpc UpdateDictStatusByDictName(PublishReq) returns (DictList) {};
+    rpc BatchDeleteDictByUUID(BatchUUID) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
+    rpc BatchDeleteArticleByUniqueIds(BatchUniqueId) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
+    // website query
+    rpc QueryDictPage(DictPageReq) returns (DictPageResp) {};
+    rpc QueryArticle(ArticleReq) returns (Article) {};
+    // manage query
+    rpc QueryMultiDictByParent(MultiDictReq) returns (MultiDictResp) {};
+    rpc QueryMultiArticleByDictName(MultiArticleReq) returns (MultiArticleResp) {};
+}
+
+// ----------------------------------------
+
+message DictList {
+    repeated Dictionary dict = 1;
+}
+
+message ArticleList {
+    repeated Article article = 1;
+}
+
+message PublishReq {
+    string dict_name = 1;
+    string last_modified_by = 2;
+}
+
+message BatchUUID { repeated int64 uuid = 1; }
+
+message BatchUniqueId { repeated int64 unique_id = 1; }
+
+enum InfoStatus {
+    PUBLISHED = 0;
+    REVIEWED = 1;
+    DRAFTED = 2;
+    CANCELED = 3;
+}
+
+message DictPageReq {
+    string parent = 1;
+    InfoStatus status = 2;
+    string language = 3;
+    PageReq page = 4;
+}
+
+message DictPageResp {
+    repeated Dictionary dictList = 1;
+    PageResp page = 2;
+}
+
+message ArticleReq {
+    string dict_name = 1;
+    InfoStatus status = 2;
+    string language = 3;
+}
+
+message PageReq {
+    int32 number = 1;
+    int32 size = 2;
+    string sort = 3;
+}
+
+message PageResp {
+    int32 total_elements = 1;
+    int32 total_pages = 2;
+    bool first = 3;
+    bool last = 4;
+}
+
+message MultiDictReq {
+    string parent = 1;
+}
+
+message MultiDictResp {
+    repeated DictList dictList = 1;
+}
+
+message MultiArticleReq {
+    string dict_name = 1;
+}
+
+message MultiArticleResp {
+    repeated ArticleList articleList = 1;
+}
+
+// ----------------------------------------
+
+message Dictionary {
+    int64 id = 1;
+    string parent = 2;
+    string name = 3;
+    string uuid = 4;
+    string language = 5;
+    InfoStatus status = 6;
+    string icon = 7;
+    string url = 8;
+    string links = 9;
+    int32 ordinal = 10;
+    string extension = 11;
+    string description = 12;
+    string created_by = 13;
+    string created_date = 14;
+    string last_modified_by = 15;
+    string last_modified_date = 16;
+}
+
+message Article {
+    int64 id = 1;
+    int64 dict_id = 2;
+    string unique_id = 3;
+    string title = 4;
+    string text = 5;
+    string language = 6;
+    string icon = 7;
+    string thumbnail = 8;
+    string tag = 9;
+    int32 ordinal = 10;
+    string extension = 11;
+    string description = 12;
+    string created_by = 13;
+    string created_date = 14;
+    string last_modified_by = 15;
+    string last_modified_date = 16;
+}

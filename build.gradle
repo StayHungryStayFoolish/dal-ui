@@ -19,6 +19,28 @@ configurations {
     }
 }
 
+if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
+    // https://stackoverflow.com/questions/40037487/the-filename-or-extension-is-too-long-error-using-gradle
+    task classpathJar(type: Jar) {
+        dependsOn configurations.runtime
+        appendix = 'classpath'
+
+        doFirst {
+            manifest {
+                attributes 'Class-Path': configurations.runtime.files.collect {
+                    it.toURI().toURL().toString().replaceFirst(/file:\/+/, '/').replaceAll(' ', '%20')
+                }.join(' ')
+            }
+        }
+    }
+
+    bootRun {
+        dependsOn classpathJar
+        doFirst {
+            classpath = files("$buildDir/classes/java/main", "$buildDir/resources/main", classpathJar.archivePath)
+        }
+    }
+}
 //buildscript {
 //    repositories {
 //        mavenLocal()
@@ -111,7 +133,7 @@ dependencies {
     implementation 'net.devh:grpc-server-spring-boot-starter:2.0.1.RELEASE'
     implementation "io.protostuff:protostuff-core:${protostuff_version}"
     implementation "io.protostuff:protostuff-runtime:${protostuff_version}"
-    implementation "com.github.BAData:protobuf-converter:${protobuf_converter_version}"
+//    implementation "com.github.BAData:protobuf-converter:${protobuf_converter_version}"
 
     compileOnly "io.grpc:grpc-netty:${grpc_version}"
     compileOnly "io.grpc:grpc-protobuf:${grpc_version}"
