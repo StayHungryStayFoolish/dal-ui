@@ -6,6 +6,6 @@ package ink.bonismo.domain.enumeration
  * @Description:
  * @Version: 1.0
  */   
-enum class UIStatus {
-    PUBLISHED, REVIEWED, DRAFTED, CANCELED
+enum class InfoStatus {
+    NULL,PUBLISHED, REVIEWED, DRAFTED, CANCELED
 }

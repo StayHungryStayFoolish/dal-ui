@@ -27,11 +27,6 @@ databaseChangeLog:
                   constraints:
                     - nullable: false
               - column:
-                  name: unique_id
-                  type: varchar(32)
-                  constraints:
-                    - nullable: false
-              - column:
                   name: title
                   type: varchar(800)
                   constraints:
@@ -106,14 +101,6 @@ databaseChangeLog:
               - column:
                   name: dict_id
                   type: BigInt
-        - createIndex:
-            indexName: idx_article_unique_id
-            tableName: article
-            unique: false
-            columns:
-              - column:
-                  name: unique_id
-                  type: varchar(32)
         - createIndex:
             indexName: idx_article_language
             tableName: article

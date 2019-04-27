@@ -8,6 +8,7 @@ plugins {
 }
 
 apply plugin: 'io.spring.dependency-management'
+apply plugin: 'kotlin-kapt'
 
 group = 'ink.bonismo'
 version = '0.0.1-SNAPSHOT'
@@ -41,6 +42,28 @@ if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
         }
     }
 }
+
+//buildscript {
+//    repositories {
+//        mavenCentral()
+//    }
+//    dependencies {
+//        classpath "org.zeroturnaround:gradle-jrebel-plugin:1.1.8"
+//    }
+//}
+//allprojects { project ->
+//    plugins.withId('kotlin') {
+//        project.apply plugin: 'org.zeroturnaround.gradle.jrebel'
+//        def jarTask = project.tasks.findByName('jar')
+//        if (jarTask) {
+//            jarTask.dependsOn(generateRebel)
+//        }
+//        def warTask = project.tasks.findByName('war')
+//        if (warTask) {
+//            warTask.dependsOn(generateRebel)
+//        }
+//    }
+//}
 //buildscript {
 //    repositories {
 //        mavenLocal()
@@ -58,18 +81,21 @@ if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:3.2.0"
+        artifact = 'com.google.protobuf:protoc:3.5.1-1'
     }
     plugins {
         grpc {
-            artifact = 'io.grpc:protoc-gen-grpc-java:1.4.0'
+            artifact = "io.grpc:protoc-gen-grpc-java:1.19.0"
         }
     }
     generateProtoTasks {
         all()*.plugins {
-            grpc {}
+            grpc {
+                outputSubDir = "java"
+            }
         }
     }
+    generatedFilesBaseDir = "$projectDir/src/"
 }
 
 sourceSets {
@@ -97,6 +123,8 @@ sourceSets {
 }
 
 repositories {
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter' }
     mavenCentral()
 }
 
@@ -120,7 +148,6 @@ dependencies {
     implementation "org.projectlombok:lombok:${lombok_version}"
     implementation "org.apache.commons:commons-lang3"
 
-
     // hibernate
     implementation 'org.liquibase:liquibase-core'
     implementation 'org.hibernate:hibernate-core'
@@ -128,9 +155,10 @@ dependencies {
     implementation 'org.hibernate:hibernate-envers'
     implementation "org.hibernate:hibernate-jcache"
     implementation "org.hibernate.validator:hibernate-validator"
-    
-    // proto
-    implementation 'net.devh:grpc-server-spring-boot-starter:2.0.1.RELEASE'
+    // lognet grpc
+    implementation 'io.github.lognet:grpc-spring-boot-starter:3.2.0'
+    // devh grpc conflict
+//    implementation 'net.devh:grpc-server-spring-boot-starter:2.0.1.RELEASE'
     implementation "io.protostuff:protostuff-core:${protostuff_version}"
     implementation "io.protostuff:protostuff-runtime:${protostuff_version}"
 //    implementation "com.github.BAData:protobuf-converter:${protobuf_converter_version}"
@@ -140,10 +168,8 @@ dependencies {
     compileOnly "io.grpc:grpc-core:${grpc_version}"
     compileOnly "io.grpc:grpc-stub:${grpc_version}"
 
-    
-    compileOnly 'org.projectlombok:lombok'
+
     runtimeOnly 'mysql:mysql-connector-java'
-    annotationProcessor 'org.projectlombok:lombok'
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstruct_version}"
     annotationProcessor "org.hibernate:hibernate-jpamodelgen"
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

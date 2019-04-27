@@ -1,5 +1,9 @@
 package ink.bonismo.web.rest
 
+import org.apache.commons.lang3.StringUtils
+import java.util.*
+import kotlin.random.Random
+
 /**
  * Created by bonismo@hotmail.com on 2019/4/18 6:40 PM
  *
@@ -8,7 +12,9 @@ package ink.bonismo.web.rest
  */
 
 fun main() {
-
+    val language = " "
+    println(StringUtils.isNoneBlank(language))
+    println(StringUtils.isNotBlank(language))
 
 }
 

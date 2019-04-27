@@ -9,8 +9,8 @@ service InfoService {
     rpc SaveDict(DictList) returns (DictList) {};
     rpc SaveArticle(ArticleList) returns (ArticleList) {};
     rpc UpdateDictStatusByDictName(PublishReq) returns (DictList) {};
-    rpc BatchDeleteDictByUUID(BatchUUID) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
-    rpc BatchDeleteArticleByUniqueIds(BatchUniqueId) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
+    rpc BatchDeleteDictById(BatchDictId) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
+    rpc BatchDeleteArticleById(BatchArtId) returns (google.protobuf.Empty) {}; // import "google/protobuf/empty.proto"
     // website query
     rpc QueryDictPage(DictPageReq) returns (DictPageResp) {};
     rpc QueryArticle(ArticleReq) returns (Article) {};
@@ -31,18 +31,20 @@ message ArticleList {
 
 message PublishReq {
     string dict_name = 1;
-    string last_modified_by = 2;
+    InfoStatus status = 2;
+    string last_modified_by = 3;
 }
 
-message BatchUUID { repeated int64 uuid = 1; }
+message BatchDictId { repeated int64 id = 1; }
 
-message BatchUniqueId { repeated int64 unique_id = 1; }
+message BatchArtId { repeated int64 id = 1; }
 
 enum InfoStatus {
-    PUBLISHED = 0;
-    REVIEWED = 1;
-    DRAFTED = 2;
-    CANCELED = 3;
+    NULL = 0;
+    PUBLISHED = 1;
+    REVIEWED = 2;
+    DRAFTED = 3;
+    CANCELED = 4;
 }
 
 message DictPageReq {
@@ -53,7 +55,7 @@ message DictPageReq {
 }
 
 message DictPageResp {
-    repeated Dictionary dictList = 1;
+    DictList dictList = 1;
     PageResp page = 2;
 }
 
@@ -70,7 +72,7 @@ message PageReq {
 }
 
 message PageResp {
-    int32 total_elements = 1;
+    int64 total_elements = 1;
     int32 total_pages = 2;
     bool first = 3;
     bool last = 4;
@@ -78,6 +80,8 @@ message PageResp {
 
 message MultiDictReq {
     string parent = 1;
+    InfoStatus status = 2;
+    string language = 3;
 }
 
 message MultiDictResp {
@@ -86,10 +90,12 @@ message MultiDictResp {
 
 message MultiArticleReq {
     string dict_name = 1;
+    InfoStatus status = 2;
+    string language = 3;
 }
 
 message MultiArticleResp {
-    repeated ArticleList articleList = 1;
+    ArticleList articleList = 1;
 }
 
 // ----------------------------------------
@@ -108,26 +114,25 @@ message Dictionary {
     string extension = 11;
     string description = 12;
     string created_by = 13;
-    string created_date = 14;
+    int64 created_date = 14;
     string last_modified_by = 15;
-    string last_modified_date = 16;
+    int64 last_modified_date = 16;
 }
 
 message Article {
     int64 id = 1;
     int64 dict_id = 2;
-    string unique_id = 3;
-    string title = 4;
-    string text = 5;
-    string language = 6;
-    string icon = 7;
-    string thumbnail = 8;
-    string tag = 9;
-    int32 ordinal = 10;
-    string extension = 11;
-    string description = 12;
-    string created_by = 13;
-    string created_date = 14;
-    string last_modified_by = 15;
-    string last_modified_date = 16;
+    string title = 3;
+    string text = 4;
+    string language = 5;
+    string icon = 6;
+    string thumbnail = 7;
+    string tag = 8;
+    int32 ordinal = 9;
+    string extension = 10;
+    string description = 11;
+    string created_by = 12;
+    int64 created_date = 13;
+    string last_modified_by = 14;
+    int64 last_modified_date = 15;
 }
