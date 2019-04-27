@@ -140,10 +140,10 @@ class InfoService(@Autowired private val dictionaryRepository: DictionaryReposit
             val entityStatus = InfoStatusUtil.toEntityStatus(protoStatus)
             val dictList = dictionaryRepository.findByName(dictName)
             if (dictList.isNotEmpty()) {
-                for (dict in dictList) {
-                    dict.status = entityStatus
-                    dict.lastModifiedBy = lastModifiedBy
-                    dict.lastModifiedDate = Instant.now()
+                dictList.forEach {
+                    it.status = entityStatus
+                    it.lastModifiedBy = lastModifiedBy
+                    it.lastModifiedDate = Instant.now()
                 }
             }
             val entity = Dictionary()
@@ -160,8 +160,8 @@ class InfoService(@Autowired private val dictionaryRepository: DictionaryReposit
     override fun batchDeleteDictById(request: Info.BatchDictId?, responseObserver: StreamObserver<Empty>?) {
         try {
             val ids = request!!.idList
-            for (id in ids) {
-                dictionaryRepository.deleteById(id)
+            ids.forEach {
+                dictionaryRepository.deleteById(it)
             }
             val result = Empty.newBuilder().build();
             responseObserver?.onNext(result)
@@ -266,23 +266,21 @@ class InfoService(@Autowired private val dictionaryRepository: DictionaryReposit
                 dictList = dictionaryRepository.findByParentAndLanguageAndStatus(parent, language, status)
             }
             val mutableSet: MutableSet<String> = HashSet()
-            for (dict in dictList) {
-                mutableSet.add(dict.name!!)
+            dictList.forEach {
+                mutableSet.add(it.name!!)
             }
-
             val entity = Dictionary()
-            for (name in mutableSet) {
+            mutableSet.forEach {
+                val name = it
                 val sameNameList: MutableList<Dictionary> = mutableListOf()
-                for (dict in dictList) {
-                    if (name == dict.name) {
-                        sameNameList.add(dict)
+                dictList.forEach {
+                    if (name == it.name) {
+                        sameNameList.add(it)
                     }
                 }
                 val protoList = entity.toProtoList(sameNameList)
                 resultBuilder.addDictList(protoList)
             }
-
-
             val result = resultBuilder.buildPartial()
             responseObserver?.onNext(result)
             responseObserver?.onCompleted()
@@ -317,8 +315,8 @@ class InfoService(@Autowired private val dictionaryRepository: DictionaryReposit
                 mutableList.add(dictionary.get())
             }
             val artMutableList: MutableList<Article> = mutableListOf()
-            for (dict in mutableList) {
-                val art = articleRepository.findByDictId(dict.id!!).orElse(null)
+            dictList.forEach {
+                val art = articleRepository.findByDictId(it.id!!).orElse(null)
                 if (null != art) {
                     artMutableList.add(art)
                 }
