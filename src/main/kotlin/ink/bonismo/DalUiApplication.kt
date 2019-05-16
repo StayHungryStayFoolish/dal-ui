@@ -10,8 +10,8 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @SpringBootApplication
 @EnableConfigurationProperties(LiquibaseProperties::class)
 @EnableAutoConfiguration(exclude = [org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration::class])
-class KotlinUiApplication
+class DalUiApplication
 
 fun main(args: Array<String>) {
-    SpringApplicationBuilder(KotlinUiApplication::class.java).web(WebApplicationType.SERVLET).run(*args)
+    SpringApplicationBuilder(DalUiApplication::class.java).web(WebApplicationType.SERVLET).run(*args)
 }
