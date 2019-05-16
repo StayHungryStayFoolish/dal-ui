@@ -31,7 +31,7 @@ server:
 
 # grpc
 grpc:
-    port: 9093
+    port: 9083
 
 logging:
     level:

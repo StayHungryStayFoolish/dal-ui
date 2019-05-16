@@ -1,7 +1,8 @@
 syntax = "proto3";
 
+package dal_ui;
 option java_package = "ink.bonismo";
-option go_package = "ink.bonismo";
+//option go_package = "ink.bonismo";
 
 import "google/protobuf/empty.proto";
 

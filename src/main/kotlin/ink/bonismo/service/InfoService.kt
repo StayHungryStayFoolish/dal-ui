@@ -190,6 +190,7 @@ class InfoService(@Autowired private val dictionaryRepository: DictionaryReposit
     }
 
     override fun queryDictPage(request: Info.DictPageReq?, responseObserver: StreamObserver<Info.DictPageResp>?) {
+        logger.info("GRpc Request QueryDictPage .")
         try {
             val parent = request!!.parent
             val protoStatus = request.status
