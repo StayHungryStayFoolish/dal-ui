@@ -1,6 +1,6 @@
 # READ ME
 
-1. git clone this repo
+1. git clone dal-ui [git@github.com:StayHungryStayFoolish/dal-ui.git] 
 
 2. run command
 
